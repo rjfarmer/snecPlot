@@ -3,10 +3,14 @@
 import numpy as np
 import glob
 import io
+import os
 
 MSUN=1.9892*10**33 #grams
 RSUN=6.9598*10**10 #cm
 LSUN=3.8418*10**33 #ergs
+SECS2DAYS=3600.0*24.0
+
+SNEC_DIR=os.environ["SNEC_DIR"]
 
 
 def get_num_zones():
@@ -46,9 +50,6 @@ def read_all_inits():
 	
 	return arr
 	
-x=read_all_inits()
-
-
 def read_output(filename,num_zones):
 	time=[]
 	data=[]
@@ -81,8 +82,23 @@ def read_all_outputs():
 				
 	return res
 		
+def load_conservation():
+	return np.genfromtxt('conservation.dat',names=['time','egrav','eint','ekin','etot','etotmint'])
 
-z=read_all_outputs()
+def load_velshock():
+	return np.genfromtxt('velshock_index.dat',names=['zone_shock','time','r_shock','v_shock','v_a_shock','tau_shock'])
 
 
+def load_mags():
+	#Get filter names
+	with open(os.path.join(SNEC_DIR,'tables','BolCorr.dat'),'r') as f:
+		l=f.readline()
+	l=l.split()[2:]
+	names = ['time', 'teff' ] + l
+	
+	return np.genfromtxt('magnitudes.dat',names=names)
+	
+	
+def load_density_prof():
+	return np.genfromtxt("density_profile.dat",names=['r_rm1','rm1','m_mm1'])
 
