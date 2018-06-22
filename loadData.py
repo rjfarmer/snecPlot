@@ -79,6 +79,8 @@ def read_all_outputs():
 	for i in glob.glob("*.xg"):
 		name=i.replace('.xg','')
 		res[name]=read_output(i,num_zones)
+		
+	#Todo rebin all dat at same time into one array
 				
 	return res
 		
