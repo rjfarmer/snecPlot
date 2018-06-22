@@ -33,9 +33,10 @@ v = m.prof.velocity
 
 v[1:] = (m.prof.dq[0:-1]*v[1:] + m.prof.dq[1:]*v[0:-1])/(m.prof.dq[0:-1] + m.prof.dq[1:])
 
+radius = (10**m.prof.logR[::-1])*rsun
 
 
-d = [zones[::-1],m.prof.mass[::-1]*msun,10**m.prof.logT[::-1],10**m.prof.logRho[::-1],
+d = [zones[::-1],m.prof.mass[::-1]*msun,radius,10**m.prof.logT[::-1],10**m.prof.logRho[::-1],
 							v[::-1],m.prof.ye[::-1],zero]
 
 
@@ -43,7 +44,7 @@ d = [zones[::-1],m.prof.mass[::-1]*msun,10**m.prof.logT[::-1],10**m.prof.logRho[
 
 #Todo need cell faced velcoity not cell centered
 np.savetxt(snec_profile,np.column_stack(d),header=str(num_zones),comments='',
-			 fmt='%d %26.16e %26.16e %26.16e %26.16e %26.16e %26.16e')
+			 fmt='%d %26.16e %26.16e %26.16e %26.16e %26.16e %26.16e %26.16e')
 
 
 names = p._listAbun(m.prof)
@@ -57,7 +58,7 @@ header=header + " ".join(mass)+'\n'
 header=header + " ".join(charge)
 
 
-d = [m.prof.mass[::-1],(10**m.prof.logR[::-1])*rsun] + [m.prof.data[mm][::-1] for mm in names]
+d = [m.prof.mass[::-1],radius] + [m.prof.data[mm][::-1] for mm in names]
 
 np.savetxt(snec_iso,np.column_stack(d),header=header,comments='')
 
