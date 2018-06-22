@@ -29,8 +29,17 @@ zero=np.zeros((num_zones))
 zones = num_zones - m.prof.zone + 1
 zones =zones.astype(int)
 
+v = m.prof.velocity
+
+v[1:] = (m.prof.dq[0:-1]*v[1:] + m.prof.dq[1:]*v[0:-1])/(m.prof.dq[0:-1] + m.prof.dq[1:])
+
+
+
 d = [zones[::-1],m.prof.mass[::-1]*msun,10**m.prof.logT[::-1],10**m.prof.logRho[::-1],
-							m.prof.velocity[::-1],m.prof.ye[::-1],zero]
+							v[::-1],m.prof.ye[::-1],zero]
+
+
+
 
 #Todo need cell faced velcoity not cell centered
 np.savetxt(snec_profile,np.column_stack(d),header=str(num_zones),comments='',
