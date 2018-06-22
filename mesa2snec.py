@@ -34,7 +34,7 @@ d = [zones[::-1],m.prof.mass[::-1]*msun,10**m.prof.logT[::-1],10**m.prof.logRho[
 
 #Todo need cell faced velcoity not cell centered
 np.savetxt(snec_profile,np.column_stack(d),header=str(num_zones),comments='',
-			 fmt='%d %26.16f %26.16f %26.16f %26.16f %26.16f %26.16f')
+			 fmt='%d %26.16e %26.16e %26.16e %26.16e %26.16e %26.16e')
 
 
 names = p._listAbun(m.prof)
