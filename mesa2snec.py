@@ -57,7 +57,7 @@ header=header + " ".join(mass)+'\n'
 header=header + " ".join(charge)
 
 
-d = [m.prof.mass[::-1],10**m.prof.logR[::-1]*rsun] + [m.prof.data[mm][::-1] for mm in names]
+d = [m.prof.mass[::-1],(10**m.prof.logR[::-1])*rsun] + [m.prof.data[mm][::-1] for mm in names]
 
 np.savetxt(snec_iso,np.column_stack(d),header=header,comments='')
 
