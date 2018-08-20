@@ -7,7 +7,7 @@ import mesaPlot as mp # https://github.com/rjfarmer/mesaplot
 p=mp.plot()
 
 #Path to mesa profile to load
-mesa_in='mesa.prof'
+mesa_in='62m_mesa.prof'
 
 # Output filenames
 snec_profile='model.short'
@@ -49,6 +49,9 @@ np.savetxt(snec_profile,np.column_stack(d),header=str(num_zones),comments='',
 # get names, masses and charges of isotopes in model
 names = p._listAbun(m.prof)
 
+if 'prot' in names:
+	names.remove('prot')
+
 abuns = [p._getIso(i)  for i in names ]
 mass = [str(pp+nn) for _,pp,nn in abuns]
 charge = [str(pp) for _,pp,nn in abuns]
@@ -58,7 +61,7 @@ header=header + " ".join(mass)+'\n'
 header=header + " ".join(charge)
 
 
-d = [m.prof.mass[::-1],radius] + [m.prof.data[mm][::-1] for mm in names]
+d = [m.prof.mass[::-1]*msun,radius] + [np.maximum(10**-99,m.prof.data[mm][::-1]) for mm in names]
 
 # Save isotope data
 np.savetxt(snec_iso,np.column_stack(d),header=header,comments='')
