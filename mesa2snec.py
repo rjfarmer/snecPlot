@@ -52,7 +52,7 @@ if u_flag:
 try:
     radius = (10**m.prof.logR[::-1])*rsun
 except AttributeError:
-    radius = m.prof.radius*rsun
+    radius = m.prof.radius[::-1]*rsun
 
 # Setup output list
 d = [zones[::-1],m.prof.mass[::-1]*msun,radius,10**m.prof.logT[::-1],10**m.prof.logRho[::-1],
