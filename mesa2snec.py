@@ -42,7 +42,7 @@ v = m.prof.velocity
 try:
     dq = m.prof.dq
 except AttributeError:
-    dq = 10**m.prof.dq
+    dq = 10**m.prof.logdq
 
 # Make velocity cell faced (only if we had u_flag)
 
