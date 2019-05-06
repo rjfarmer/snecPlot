@@ -3,11 +3,17 @@ import glob
 import io
 import os
 import mesaPlot as mp # https://github.com/rjfarmer/mesaplot
+import sys
 
 p=mp.plot()
 
 #Path to mesa profile to load
-mesa_in='62m_mesa.prof'
+mesa_in=sys.argv[1]
+
+try:
+    u_flag = sys.argv[2] == 1
+except IndexError:
+    u_flag=False
 
 # Output filenames
 snec_profile='model.short'
@@ -33,8 +39,15 @@ zones = zones.astype(int)
 
 v = m.prof.velocity
 
+try:
+    dq = m.prof.dq
+except AttributeError:
+    dq = 10**m.prof.dq
+
 # Make velocity cell faced (only if we had u_flag)
-v[1:] = (m.prof.dq[0:-1]*v[1:] + m.prof.dq[1:]*v[0:-1])/(m.prof.dq[0:-1] + m.prof.dq[1:])
+
+if u_flag:
+    v[1:] = (dq[0:-1]*v[1:] + dq[1:]*v[0:-1])/(dq[0:-1] + dq[1:])
 
 radius = (10**m.prof.logR[::-1])*rsun
 
