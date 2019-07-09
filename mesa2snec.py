@@ -18,8 +18,8 @@ except IndexError:
 # Output filenames
 snec_profile='model.short'
 snec_iso='model.iso.dat'
-parameter_file='parameters'
-#gridding='GridPattern.dat'
+#parameter_file='parameters'
+gridding='GridPattern.dat'
 
 msun = 1.9892*10**33
 rsun = 6.9598*10**10
@@ -73,8 +73,8 @@ mass = [str(pp+nn) for _,pp,nn in abuns]
 charge = [str(pp) for _,pp,nn in abuns]
 
 header=str(num_zones)+' '+str(len(names))+'\n'
-header=header + " ".join(mass)+'\n'
-header=header + " ".join(charge)
+header=header + "d0 ".join(mass)+'\n'
+header=header + "d0 ".join(charge)
 
 
 d = [m.prof.mass[::-1]*msun,radius] + [np.maximum(10**-99,m.prof.data[mm][::-1]) for mm in names]
@@ -82,26 +82,28 @@ d = [m.prof.mass[::-1]*msun,radius] + [np.maximum(10**-99,m.prof.data[mm][::-1])
 # Save isotope data
 np.savetxt(snec_iso,np.column_stack(d),header=header,comments='')
 
-with open(parameter_file,'r') as f:
-	l=f.readlines()
+# with open(parameter_file,'r') as f:
+	# l=f.readlines()
 	
-for idx,i in enumerate(l):
-	# if 'imax' in i:
-		# l[idx]='imax = '+str(num_zones)+'\n'
-	if 'comp_profile_name' in i:
-		l[idx]='comp_profile_name = "'+str(snec_iso)+'"\n'
-	elif 'profile_name' in i and 'comp' not in i:
-		l[idx]='profile_name = "'+str(snec_profile)+'"\n'	
+# for idx,i in enumerate(l):
+	# # if 'imax' in i:
+		# # l[idx]='imax = '+str(num_zones)+'\n'
+	# if 'comp_profile_name' in i:
+		# l[idx]='comp_profile_name = "'+str(snec_iso)+'"\n'
+	# elif 'profile_name' in i and 'comp' not in i:
+		# l[idx]='profile_name = "'+str(snec_profile)+'"\n'	
 
 # edit the parameters file with the filenames
-with open(parameter_file,'w') as f:
-	f.writelines("%s" % s for s in l)
+# with open(parameter_file,'w') as f:
+	# f.writelines("%s" % s for s in l)
 	
-# Skip using a different gridding for now, just use the defaults
-# mm = m.prof.q[::-1]
+mm = m.prof.q[::-1]
+
+mm[0] = 0.0
 	
-# np.savetxt(gridding,mm)
-	
+np.savetxt(gridding,mm)
+
+print("Number of zones:",len(mm))	
 
 		
 
